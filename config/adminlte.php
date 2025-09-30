@@ -349,8 +349,8 @@ return [
             // 'can'  => 'users.index',
             'submenu' => [
                 [
-                    'text' => 'Consulta Correspondencia',
-                    'url' => '',
+                    'text' => 'Rezagos',
+                    'url' => 'rezago',
                     'icon' => 'fas fa-user',
                 ],
             ],
