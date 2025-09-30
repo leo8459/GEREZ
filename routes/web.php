@@ -77,8 +77,18 @@ Route::middleware('auth')->group(function () {
 
 
 
-        Route::get('/rezago', [RezagoController::class, 'getrezagos']);
-
+    Route::get('/rezago', [RezagoController::class, 'getrezagos']);
+    Route::get('/ventanillarezagos', [RezagoController::class, 'getventanillarezagos']);
+    Route::get('/descargas/reportes/{filename}', function (string $filename) {
+        $path = storage_path('app/public/reportes/' . $filename);
+        if (!file_exists($path)) {
+            abort(404);
+        }
+        return response()->download($path, $filename, [
+            'Content-Type'        => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ]);
+    })->name('reportes.download');
 });
 
 require __DIR__ . '/auth.php';

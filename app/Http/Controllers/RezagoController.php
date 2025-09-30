@@ -10,4 +10,8 @@ class RezagoController extends Controller
     {
         return view('rezagos.rezago');
     }
+    public function getventanillarezagos ()
+    {
+        return view('rezagos.ventanillarezagos');
+    }
 }

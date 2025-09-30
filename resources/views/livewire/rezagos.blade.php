@@ -21,50 +21,18 @@
                 <div class="col-12">
                     <div class="card">
 
-                        <div class="card-header">
-                            <div class="d-flex align-items-center">
-                                <div class="float-left d-flex align-items-center">
-                                    <input type="text" wire:model="searchTerm" placeholder="Buscar..."
-                                        class="form-control" style="margin-right: 10px;" wire:keydown.enter="$refresh">
-                                    <button type="button" class="btn btn-primary" wire:click="$refresh">Buscar</button>
-                                </div>
-                            </div>
+                        <div class="float-left d-flex align-items-center">
+                            <input type="text" wire:model.defer="searchTerm" placeholder="Buscar por código..."
+                                class="form-control" style="margin-right: 10px;" wire:keydown.enter="selectBySearch">
 
-                            <div class="form-inline mt-2">
-                                @hasrole('ADMINISTRADOR')
-                                    <label for="department">Departamento:</label>
-                                @endhasrole
-                                <select id="department" wire:model="department" class="form-control mx-2">
-                                    <option value="">Todos</option>
-                                    <option value="LA PAZ">LA PAZ</option>
-                                    <option value="COCHABAMBA">COCHABAMBA</option>
-                                    <option value="SANTA CRUZ">SANTA CRUZ</option>
-                                    <option value="ORURO">ORURO</option>
-                                    <option value="POTOSI">POTOSI</option>
-                                    <option value="CHUQUISACA">CHUQUISACA</option>
-                                    <option value="BENI">BENI</option>
-                                    <option value="PANDO">PANDO</option>
-                                    <option value="TARIJA">TARIJA</option>
-                                </select>
-
-                                <label for="startDate">Desde:</label>
-                                <input type="date" id="startDate" wire:model="startDate" class="form-control mx-2">
-
-                                <label for="endDate">Hasta:</label>
-                                <input type="date" id="endDate" wire:model="endDate" class="form-control mx-2">
-                            </div>
+                            <button type="button" class="btn btn-primary" wire:click="selectBySearch">
+                                Buscar
+                            </button>
                         </div>
 
-                        @if (session()->has('message'))
-                            <div class="alert alert-success">
-                                {{ session('message') }}
-                            </div>
-                        @endif
-                        @if (session()->has('error'))
-                            <div class="alert alert-danger">
-                                {{ session('error') }}
-                            </div>
-                        @endif
+
+
+
                         <div class="ml-auto d-flex align-items-center">
                             <input type="file" wire:model="file" accept=".xlsx,.xls,.csv"
                                 class="form-control-file mr-2">
@@ -72,6 +40,13 @@
                                 @disabled(!$file)>
                                 Importar Excel
                             </button>
+                        </div>
+                        <div class="ml-2">
+                            <button type="button" class="btn btn-warning" wire:click="sendToRezago"
+                                @disabled(!$selectedAdmisiones)>
+                                Mandar a Rezago
+                            </button>
+
                         </div>
 
                         @error('file')

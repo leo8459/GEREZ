@@ -353,6 +353,11 @@ return [
                     'url' => 'rezago',
                     'icon' => 'fas fa-user',
                 ],
+                [
+                    'text' => 'Rezagos',
+                    'url' => 'ventanillarezagos',
+                    'icon' => 'fas fa-user',
+                ],
             ],
         ],
         [
