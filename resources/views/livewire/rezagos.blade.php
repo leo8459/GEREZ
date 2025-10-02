@@ -19,44 +19,63 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
+
+                    {{-- ALERTAS Bootstrap para mensajes/errores --}}
+                    @if (session()->has('message'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ session('message') }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    @endif
+                    @if (session()->has('error'))
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {{ session('error') }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    @endif
+
                     <div class="card">
 
-                        <div class="float-left d-flex align-items-center">
-                            <input type="text" wire:model.defer="searchTerm" placeholder="Buscar por código..."
-                                class="form-control" style="margin-right: 10px;" wire:keydown.enter="selectBySearch">
+                        <div class="card-header d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <input type="text"
+                                       wire:model.defer="searchTerm"
+                                       placeholder="Buscar por código..."
+                                       class="form-control"
+                                       style="margin-right: 10px;"
+                                       wire:keydown.enter="selectBySearch">
 
-                            <button type="button" class="btn btn-primary" wire:click="selectBySearch">
-                                Buscar
-                            </button>
-                        </div>
+                                <button type="button" class="btn btn-primary" wire:click="selectBySearch">
+                                    Buscar
+                                </button>
+                            </div>
 
+                            <div class="d-flex align-items-center">
+                                <input type="file" wire:model="file" accept=".xlsx,.xls,.csv"
+                                       class="form-control-file mr-2">
+                                <button type="button" class="btn btn-success" wire:click="importExcel">
+                                    Importar Excel
+                                </button>
 
-
-
-                        <div class="ml-auto d-flex align-items-center">
-                            <input type="file" wire:model="file" accept=".xlsx,.xls,.csv"
-                                class="form-control-file mr-2">
-                            <button type="button" class="btn btn-success" wire:click="importExcel"
-                                @disabled(!$file)>
-                                Importar Excel
-                            </button>
-                        </div>
-                        <div class="ml-2">
-                            <button type="button" class="btn btn-warning" wire:click="sendToRezago"
-                                @disabled(!$selectedAdmisiones)>
-                                Mandar a Rezago
-                            </button>
-
+                                {{-- Botón SIEMPRE activo --}}
+                                <button type="button" class="btn btn-warning ml-2" wire:click="sendToRezago">
+                                    Mandar a Rezago
+                                </button>
+                            </div>
                         </div>
 
                         @error('file')
-                            <div class="text-danger mt-2">{{ $message }}</div>
+                            <div class="text-danger mt-2 px-3">{{ $message }}</div>
                         @enderror
 
-                        <div wire:loading wire:target="file" class="mt-2">
+                        <div wire:loading wire:target="file" class="mt-2 px-3">
                             Cargando archivo...
                         </div>
-                        <div wire:loading wire:target="importExcel" class="mt-2">
+                        <div wire:loading wire:target="importExcel" class="mt-2 px-3">
                             Importando, por favor espera...
                         </div>
 
@@ -85,11 +104,9 @@
                                     @forelse ($admisiones as $r)
                                         <tr>
                                             <td>
-                                                <input type="checkbox" wire:model="selectedAdmisiones"
-                                                    value="{{ $r->id }}" />
+                                                <input type="checkbox" wire:model="selectedAdmisiones" value="{{ $r->id }}" />
                                             </td>
-                                            <td>{{ ($admisiones->currentPage() - 1) * $admisiones->perPage() + $loop->iteration }}
-                                            </td>
+                                            <td>{{ ($admisiones->currentPage() - 1) * $admisiones->perPage() + $loop->iteration }}</td>
                                             <td>{{ $r->codigo }}</td>
                                             <td>{{ $r->destinatario }}</td>
                                             <td>{{ $r->telefono }}</td>
@@ -102,8 +119,7 @@
                                             <td>{{ $r->created_at }}</td>
                                             @hasrole('ADMINISTRADOR')
                                                 <td>
-                                                    <button type="button" class="btn btn-secondary btn-sm"
-                                                        disabled>—</button>
+                                                    <button type="button" class="btn btn-secondary btn-sm" disabled>—</button>
                                                 </td>
                                             @endhasrole
                                         </tr>

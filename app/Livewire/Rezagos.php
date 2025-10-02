@@ -7,7 +7,6 @@ use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use App\Models\Rezago;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Imports\RezagosImport;
 
 class Rezagos extends Component
 {
@@ -31,16 +30,20 @@ class Rezagos extends Component
 
     // --- Hooks para resetear página al cambiar filtros ---
     public function updatingSearchTerm()
-    { /* no reset aquí para permitir Enter */
+    {
+        // no reset aquí para permitir Enter
     }
+
     public function updatingDepartment()
     {
         $this->resetPage();
     }
+
     public function updatingStartDate()
     {
         $this->resetPage();
     }
+
     public function updatingEndDate()
     {
         $this->resetPage();
@@ -74,6 +77,7 @@ class Rezagos extends Component
         session()->flash('message', "Código {$row->codigo} seleccionado (PRE REZAGO).");
         $this->dispatch('$refresh');
     }
+
     /** Botón: Mandar a Rezago (cambia estado = REZAGO de los seleccionados) */
     public function sendToRezago(): void
     {
@@ -113,8 +117,8 @@ class Rezagos extends Component
                 $t = trim($this->searchTerm);
                 $q->where(function ($qq) use ($t) {
                     $qq->where('codigo', 'like', "%{$t}%")
-                        ->orWhere('destinatario', 'like', "%{$t}%")
-                        ->orWhere('telefono', 'like', "%{$t}%");
+                       ->orWhere('destinatario', 'like', "%{$t}%")
+                       ->orWhere('telefono', 'like', "%{$t}%");
                 });
             })
             ->when($this->department, fn($q) => $q->where('ciudad', $this->department))
