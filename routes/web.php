@@ -7,6 +7,8 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RezagoController;
 use App\Http\Controllers\RoleHasPermissionController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PackageSearchController;
+use App\Http\Controllers\RezagoSearchController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,9 +22,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
-
+    return view('home'); // resources/views/home.blade.php
+})->name('home');
+Route::get('/buscar-rezagos', RezagoSearchController::class)
+     ->name('rezagos.buscar');
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
