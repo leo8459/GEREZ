@@ -25,7 +25,7 @@ Route::get('/', function () {
     return view('home'); // resources/views/home.blade.php
 })->name('home');
 Route::get('/buscar-rezagos', RezagoSearchController::class)
-     ->name('rezagos.buscar');
+    ->name('rezagos.buscar');
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -82,6 +82,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/rezago', [RezagoController::class, 'getrezagos']);
     Route::get('/ventanillarezagos', [RezagoController::class, 'getventanillarezagos']);
+    Route::get('/almacenrezagos', [RezagoController::class, 'getalmacenrezagos']);
+
     Route::get('/descargas/reportes/{filename}', function (string $filename) {
         $path = storage_path('app/public/reportes/' . $filename);
         if (!file_exists($path)) {

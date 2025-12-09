@@ -354,8 +354,13 @@ return [
                     'icon' => 'fas fa-user',
                 ],
                 [
-                    'text' => 'Rezagos',
+                    'text' => 'Ventanilla',
                     'url' => 'ventanillarezagos',
+                    'icon' => 'fas fa-user',
+                ],
+                 [
+                    'text' => 'Almacen',
+                    'url' => 'almacenrezagos',
                     'icon' => 'fas fa-user',
                 ],
             ],
