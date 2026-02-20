@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
+use App\Exports\RezagosTemplateExport;
 use App\Models\Rezago;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -24,9 +25,35 @@ class Rezagos extends Component
     /** Upload Excel */
     public $file;
 
+    /** Formulario manual */
+    public $manualCodigo = '';
+    public $manualDestinatario = '';
+    public $manualTelefono = '';
+    public $manualPeso;
+    public $manualAduana = '';
+    public $manualZona = '';
+    public $manualTipo = '';
+    public $manualCiudad = '';
+    public $manualObservacion = '';
+
     protected $rules = [
         'file' => 'nullable|file|mimes:xlsx,xls,csv|max:10240',
     ];
+
+    protected function manualRules(): array
+    {
+        return [
+            'manualCodigo' => 'required|string|max:255|unique:rezagos,codigo',
+            'manualDestinatario' => 'nullable|string|max:255',
+            'manualTelefono' => 'nullable|string|max:30',
+            'manualPeso' => 'nullable|numeric|min:0',
+            'manualAduana' => 'nullable|string|max:255',
+            'manualZona' => 'nullable|string|max:255',
+            'manualTipo' => 'nullable|string|max:255',
+            'manualCiudad' => 'nullable|string|max:255',
+            'manualObservacion' => 'nullable|string|max:255',
+        ];
+    }
 
     // --- Hooks para resetear página al cambiar filtros ---
     public function updatingSearchTerm()
@@ -96,6 +123,23 @@ class Rezagos extends Component
         $this->dispatch('$refresh');
     }
 
+    public function sendToTransito(): void
+    {
+        if (empty($this->selectedAdmisiones)) {
+            session()->flash('error', 'No hay registros seleccionados.');
+            return;
+        }
+
+        Rezago::whereIn('id', $this->selectedAdmisiones)->update(['estado' => 'TRANSITO']);
+
+        $count = count($this->selectedAdmisiones);
+        $this->selectedAdmisiones = [];
+        $this->selectAll = false;
+
+        session()->flash('message', "Se cambiaron {$count} registro(s) a estado TRANSITO.");
+        $this->dispatch('$refresh');
+    }
+
     /** Importar Excel (opcional, queda aquí por si ya lo usas) */
     public function importExcel(): void
     {
@@ -106,6 +150,50 @@ class Rezagos extends Component
             session()->flash('message', 'Importación completada correctamente.');
             $this->resetPage();
         }
+    }
+
+    public function downloadTemplate()
+    {
+        return Excel::download(new RezagosTemplateExport(), 'formato_rezagos.xlsx');
+    }
+
+    public function saveManual(): void
+    {
+        $this->validate($this->manualRules());
+
+        Rezago::create([
+            'codigo' => trim((string) $this->manualCodigo),
+            'destinatario' => $this->manualDestinatario !== '' ? trim((string) $this->manualDestinatario) : null,
+            'telefono' => $this->manualTelefono !== '' ? trim((string) $this->manualTelefono) : null,
+            'peso' => $this->manualPeso !== '' && $this->manualPeso !== null ? $this->manualPeso : null,
+            'aduana' => $this->manualAduana !== '' ? trim((string) $this->manualAduana) : null,
+            'zona' => $this->manualZona !== '' ? trim((string) $this->manualZona) : null,
+            'tipo' => $this->manualTipo !== '' ? trim((string) $this->manualTipo) : null,
+            'estado' => 'PRE REZAGO',
+            'ciudad' => $this->manualCiudad !== '' ? trim((string) $this->manualCiudad) : null,
+            'observacion' => $this->manualObservacion !== '' ? trim((string) $this->manualObservacion) : null,
+        ]);
+
+        $this->resetManualForm();
+        $this->resetPage();
+        session()->flash('message', 'Registro agregado manualmente correctamente.');
+        $this->dispatch('manual-rezago-created');
+    }
+
+    public function resetManualForm(): void
+    {
+        $this->reset([
+            'manualCodigo',
+            'manualDestinatario',
+            'manualTelefono',
+            'manualPeso',
+            'manualAduana',
+            'manualZona',
+            'manualTipo',
+            'manualCiudad',
+            'manualObservacion',
+        ]);
+        $this->resetValidation();
     }
 
     public function render()

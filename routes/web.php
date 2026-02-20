@@ -83,6 +83,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/rezago', [RezagoController::class, 'getrezagos']);
     Route::get('/ventanillarezagos', [RezagoController::class, 'getventanillarezagos']);
     Route::get('/almacenrezagos', [RezagoController::class, 'getalmacenrezagos']);
+    Route::get('/transitorezagos', [RezagoController::class, 'gettransitorezagos']);
 
     Route::get('/descargas/reportes/{filename}', function (string $filename) {
         $path = storage_path('app/public/reportes/' . $filename);

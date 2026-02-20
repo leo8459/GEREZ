@@ -26,7 +26,7 @@ class RezagosImport implements ToCollection, WithHeadingRow
                     'aduana'       => trim((string)($row['aduana'] ?? '')),
                     'zona'         => trim((string)($row['zona'] ?? '')),
                     'tipo'         => trim((string)($row['tipo'] ?? '')),
-                    'estado'       => trim((string)($row['estado'] ?? 'PRE REZAGO')),
+                    'estado'       => 'PRE REZAGO',
                     'ciudad'       => trim((string)($row['ciudad'] ?? '')),
                 ]
             );

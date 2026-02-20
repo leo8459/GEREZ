@@ -18,4 +18,8 @@ class RezagoController extends Controller
     {
         return view('rezagos.almacenrezagos');
     }
+    public function gettransitorezagos ()
+    {
+        return view('rezagos.transitorezagos');
+    }
 }

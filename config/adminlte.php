@@ -217,7 +217,7 @@ return [
     'sidebar_mini' => 'lg',
     'sidebar_collapse' => true,
     'sidebar_collapse_auto_size' => false,
-    'sidebar_collapse_remember' => false,
+    'sidebar_collapse_remember' => true,
     'sidebar_collapse_remember_no_transition' => true,
     'sidebar_scrollbar_theme' => 'os-theme-light',
     'sidebar_scrollbar_auto_hide' => 'l',
@@ -310,21 +310,21 @@ return [
             'type' => 'sidebar-menu-search',
             'text' => 'search',
         ],
-        ['header' => 'SISTEMA DE INFORMACION'],
+        ['header' => 'SISTEMA DE INFORMACIÓN'],
         [
             'text' => 'Dashboard',
             'url' => '/dashboard',
-            'icon' => 'fas fa-user',
+            'icon' => 'fas fa-tachometer-alt',
         ],
         [
-            'text' => 'Gestion Usuarios',
-            'icon' => 'fas fa-users',
+            'text' => 'Gestión de Usuarios',
+            'icon' => 'fas fa-user-shield',
             // 'can'  => 'users.index',
             'submenu' => [
                 [
                     'text' => 'Personal AGBC',
                     'url' => 'users',
-                    'icon' => 'fas fa-user',
+                    'icon' => 'fas fa-id-badge',
                 ],
                 [
                     'text' => 'Roles',
@@ -339,43 +339,46 @@ return [
                 [
                     'text' => 'Accesos',
                     'url' => 'role-has-permissions',
-                    'icon' => 'fas fa-key',
+                    'icon' => 'fas fa-user-lock',
                 ],
             ],
         ],
         [
-            'text' => 'Consultas Informacion',
-            'icon' => 'fas fa-users',
+            'text' => 'Gestión de Rezagos',
+            'icon' => 'fas fa-search',
             // 'can'  => 'users.index',
             'submenu' => [
                 [
                     'text' => 'Rezagos',
                     'url' => 'rezago',
-                    'icon' => 'fas fa-user',
+                    'icon' => 'fas fa-box-open',
                 ],
                 [
                     'text' => 'Ventanilla',
                     'url' => 'ventanillarezagos',
-                    'icon' => 'fas fa-user',
+                    'icon' => 'fas fa-window-maximize',
                 ],
                  [
-                    'text' => 'Almacen',
+                    'text' => 'Almacén',
                     'url' => 'almacenrezagos',
-                    'icon' => 'fas fa-user',
+                    'icon' => 'fas fa-warehouse',
+                ],
+                [
+                    'text' => 'En Tránsito',
+                    'url' => 'transitorezagos',
+                    'icon' => 'fas fa-truck',
                 ],
             ],
         ],
         [
             'text' => 'Rendimiento',
             'url' => '/pulse',
-
-            'icon' => 'fas fa-user',
+            'icon' => 'fas fa-chart-line',
         ],
         [
             'text' => 'Logs',
             'url' => '/log-viewer',
-
-            'icon' => 'fas fa-user',
+            'icon' => 'fas fa-clipboard-list',
         ],
     ],
 
@@ -481,6 +484,26 @@ return [
                     'type' => 'js',
                     'asset' => false,
                     'location' => '//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js',
+                ],
+            ],
+        ],
+        'AGBCTheme' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'css/agbc-theme.css',
+                ],
+            ],
+        ],
+        'AGBCLayout' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'js/agbc-layout.js',
                 ],
             ],
         ],
